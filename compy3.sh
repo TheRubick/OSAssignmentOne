@@ -15,6 +15,7 @@ for x in $( eval echo {1..$N})
 do
 # we would assign push port for each two consumers
 python consumer.py $numPort &
+python consumer2.py $numPort2 &
 if (( $x % 2 == 0 ))
 then
     #python collector.py $numPort &
@@ -30,3 +31,5 @@ if (( $N % 2 != 0))
 then
 python collector.py $numPort $numPort2 & # sara
 fi
+
+python collector2.py &

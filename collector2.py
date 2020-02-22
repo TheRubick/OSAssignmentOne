@@ -5,30 +5,25 @@ import sys
 import cv2
 def collector():
 
-    pullPort = str(sys.argv[1])
-    pushPort = str(sys.argv[2]) # sara
+    #pullPort = str(sys.argv[1])
     #print(type(pullPort))
     #print(pullPort)
     context = zmq.Context()
     # recieve work
     collector_receiver = context.socket(zmq.PULL)
-    collector_receiver.bind("tcp://127.0.0.1:%s" % pullPort)
+    collector_receiver.bind("tcp://127.0.0.1:5558")
     # send work
     #collector_sender = context.socket(zmq.PUSH)
     # ip address and port of this socket would be assigned on connecting the 2 machines
     #collector_sender.connect("tcp://127.0.0.1:9888") 
-    collector_sender = context.socket(zmq.PUSH) # sara
-    collector_sender.connect("tcp://127.0.0.1:%s" % pushPort) # sara
+
     
     while True:
-        #print("collector is accessed")
+        file1 = open("file.txt","a")
         recvImag = collector_receiver.recv_pyobj()
-        print(pullPort)
-        print(type(recvImag))
-        #cv2.imshow('imageColl',recvImag)
-        #cv2.waitKey()
-        #collector_sender.send_json(result)
 
-        collector_sender.send_pyobj(recvImag)
+        #file1.write(recvImag)
+        file1.writelines(recvImag)
+        file1.close()  # will not excute
 
 collector()
