@@ -18,7 +18,7 @@ def contouring(img):
         return bounding_boxes
 
 
-def consumer2():
+def consumer():
 
         #pullPort = str(sys.argv[2])
         pullPort = str(sys.argv[1])  #will use this
