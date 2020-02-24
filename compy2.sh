@@ -13,8 +13,7 @@ python collector2.py &
 for x in $( eval echo {1..$N})
 do
 # we would assign push port for each two consumers
-#python consumer2.py $numPort2 &
-python consumer2.py &
+python consumer2.py $numPort2 &
 if (( $x % 2 == 0 ))
 then
     #python collector.py $numPort &

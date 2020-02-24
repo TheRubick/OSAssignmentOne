@@ -3,6 +3,8 @@ import zmq
 import random
 import sys
 import cv2
+import pickle
+import numpy as np
 def collector():
 
     pullPort = str(sys.argv[1])
@@ -18,17 +20,19 @@ def collector():
     # ip address and port of this socket would be assigned on connecting the 2 machines
     #collector_sender.connect("tcp://127.0.0.1:9888") 
     collector_sender = context.socket(zmq.PUSH) # sara
-    collector_sender.connect("tcp://127.0.0.1:%s" % pushPort) # sara
+    collector_sender.bind("tcp://127.0.0.1:%s" % pushPort) # sara
+    
+    #collector_sender.bind("tcp://192.168.43.221:%s" % pushPort) # sara
     
     while True:
         #print("collector is accessed")
-        recvImag = collector_receiver.recv_pyobj()
+        recv_Packet = pickle.loads(collector_receiver.recv())
         print(pullPort)
-        print(type(recvImag))
-        #cv2.imshow('imageColl',recvImag)
+        print("collector frame # = "+str(recv_Packet['frame#']))
+        #cv2.imshow('imageColl',recv_Packet['image'])
         #cv2.waitKey()
         #collector_sender.send_json(result)
-
-        collector_sender.send_pyobj(recvImag)
+        #collector_sender.send_json(packet_dict)
+        collector_sender.send(pickle.dumps(recv_Packet))
 
 collector()

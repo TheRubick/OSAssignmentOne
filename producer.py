@@ -1,10 +1,10 @@
 import time
 import zmq
 import cv2 
-
-
+import pickle
+import skimage.io as io
 # Used as counter variable 
-  
+import numpy as np
 # Function to extract frames 
 def FrameCapture(path): 
       
@@ -25,12 +25,12 @@ def FrameCapture(path):
                 break
         # Saves the frames with frame-count 
         cv2.imwrite("frame%d.jpg" % frameCount, image) 
-        img_message = cv2.imread('frame0.jpg',0)
+        #img_message = cv2.imread('frame0.jpg',0)
         frameCount += 1
 
     return frameCount
 # Calling the function 
-frameCount = FrameCapture("inputVideo") 
+frameCount = FrameCapture("test2.webm") 
 
 def producer():
     context = zmq.Context()
@@ -41,8 +41,12 @@ def producer():
     for i in range(0,frameCount):
         #should be modified to send image frame object
         #each file in python would take argument which is the number of port
+        print('Producer : frame#'+str(i))
         img_message = cv2.imread('frame'+str(i)+'.jpg',0)
-        zmq_socket.send_pyobj(img_message)
-        time.sleep(10)
+        msg_packet = {'frame#' : i , 'image' : img_message}
+        zmq_socket.send(pickle.dumps(msg_packet))
+        #print(img_message.dtype)
+        
+        #time.sleep(10)
         
 producer()
