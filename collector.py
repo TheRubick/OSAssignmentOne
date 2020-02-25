@@ -20,7 +20,7 @@ def collector():
     # ip address and port of this socket would be assigned on connecting the 2 machines
     #collector_sender.connect("tcp://127.0.0.1:9888") 
     collector_sender = context.socket(zmq.PUSH) # sara
-    collector_sender.bind("tcp://127.0.0.1:%s" % pushPort) # sara
+    collector_sender.bind("tcp://25.0.22.171:%s" % pushPort) # sara
     
     #collector_sender.bind("tcp://192.168.43.221:%s" % pushPort) # sara
     

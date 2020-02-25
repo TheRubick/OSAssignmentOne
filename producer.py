@@ -3,6 +3,7 @@ import zmq
 import cv2 
 import pickle
 import skimage.io as io
+import sys
 # Used as counter variable 
 import numpy as np
 # Function to extract frames 
@@ -30,7 +31,7 @@ def FrameCapture(path):
 
     return frameCount
 # Calling the function 
-frameCount = FrameCapture("test2.webm") 
+frameCount = FrameCapture(str(sys.argv[1]))
 
 def producer():
     context = zmq.Context()
@@ -45,8 +46,5 @@ def producer():
         img_message = cv2.imread('frame'+str(i)+'.jpg',0)
         msg_packet = {'frame#' : i , 'image' : img_message}
         zmq_socket.send(pickle.dumps(msg_packet))
-        #print(img_message.dtype)
-        
-        #time.sleep(10)
         
 producer()

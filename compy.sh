@@ -1,11 +1,11 @@
 #! /bin/bash
 
-python producer.py &
-
 #assign N from the CLI
 declare -i N=0
 declare -i numPort=6000
 declare -i numPort2=7000 # sara
+
+python producer.py $2 &
 
 N=$1
 
